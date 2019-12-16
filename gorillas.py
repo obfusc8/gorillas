@@ -3,6 +3,7 @@
 import os
 import pygame
 import random
+import sys
 
 if not pygame.font:
     print("Warning, fonts disabled")
@@ -12,6 +13,71 @@ if not pygame.mixer:
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir, "data")
 WHITE = (255,255,255)
+GOR_COLOR = (255, 170, 82)
+screen_width = 1200
+screen_height = 800
+background = (0,50,100)
+clock_speed = 60
+
+GOR_DOWN_ASCII = """
+
+          XXXXXXXX
+          XXXXXXXX
+         XX      XX
+         XXXXXXXXXX
+         XXX  X  XX
+          XXXXXXXX
+          XXXXXXXX
+           XXXXXX
+      XXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+  XXXXXXXXXXXX XXXXXXXXXXX
+ XXXXXXXXXXXXX XXXXXXXXXXXX
+ XXXXXXXXXXXX X XXXXXXXXXXX
+XXXXX XXXXXX XXX XXXXX XXXXX
+XXXXX XXX   XXXXX   XX XXXXX
+XXXXX   XXXXXXXXXXXX   XXXXX
+ XXXXX  XXXXXXXXXXXX  XXXXX
+ XXXXX  XXXXXXXXXXXX  XXXXX
+  XXXXX XXXXXXXXXXXX XXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+# Make surface from ASCII
+def makeSurfaceFromASCII(ascii, fgColor=(255,255,255), bgColor=(0,0,0)):
+    """Returns a new pygame.Surface object that has the image drawn on it as specified by the ascii parameter.
+    The first and last line in ascii are ignored. Otherwise, any X in ascii marks a pixel with the foreground color
+    and any other letter marks a pixel of the background color. The Surface object has a width of the widest line
+    in the ascii string, and is always rectangular."""
+
+    """Try experimenting with this function so that you can specify more than two colors. (Pass a dict of
+    ascii letters and RGB tuples, say."""
+    ascii = ascii.split('\n')[1:-1]
+    width = max([len(x) for x in ascii])
+    height = len(ascii)
+    surf = pygame.Surface((width, height))
+    surf.fill(bgColor)
+
+    pArr = pygame.PixelArray(surf)
+    for y in range(height):
+        for x in range(len(ascii[y])):
+            if ascii[y][x] == 'X':
+                pArr[x][y] = fgColor
+    return surf
+
+def placeGorilla(buildings, pos):
+    x = buildings.sprites()[pos].rect.x + buildings.sprites()[pos].rect.width//2
+    y = screen_height - buildings.sprites()[pos].rect.height
+    return x, y    
 
 # functions to create our resources
 def load_image(name, colorkey=None):
@@ -42,15 +108,28 @@ def load_sound(name):
         raise SystemExit(str(geterror()))
     return sound
 
-# classes for our game objects
+# classes for the game objects
 class Gorilla(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, xy=None):
+        self.width = 50
+        self.height = 54
         pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image("gorilla.bmp", WHITE)
-        self.image = pygame.transform.scale(self.image, (50, 54))
+        self.image = GOR_DOWN_SURF
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.rect = self.image.get_rect()
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
+        if xy == None:
+            self.x = 0
+            self.y = 0
+        else:
+            self.rect.x = xy[0] - self.width//2
+            self.rect.y = xy[1] - self.height
+
+    def setXY(self, xy):
+        self.rect.x = xy[0] - self.width//2
+        self.rect.y = xy[1] - self.height
 
 class Building(pygame.sprite.Sprite):
     
@@ -95,14 +174,11 @@ class Banana():
     def __repr__(self):
         pass
 
-def main():
-    screen_width = 1200
-    screen_height = 800
-    background = (0,50,100)
-    clock_speed = 60
+GOR_DOWN_SURF = makeSurfaceFromASCII(GOR_DOWN_ASCII, GOR_COLOR, background)
 
+def main():
     pygame.init()
-    screen = pygame.display.set_mode((screen_width,screen_height))
+    screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption('GORILLAS')
     clock = pygame.time.Clock()
     done = False
@@ -122,19 +198,9 @@ def main():
         total_width += b.image.get_width() + 3
         buildings.add(b)
 
-    # Get positions of Gorillas
-    left_x = buildings.sprites()[1].rect.x + buildings.sprites()[1].rect.width//2
-    left_y = screen_height - buildings.sprites()[1].rect.height
-    right_x = buildings.sprites()[-2].rect.x + buildings.sprites()[-2].rect.width//2
-    right_y = screen_height - buildings.sprites()[-2].rect.height
-
-    g1 = Gorilla()
-    g1.rect.x = left_x - 25
-    g1.rect.y = left_y - 54
-
-    g2 = Gorilla()
-    g2.rect.x = right_x - 25
-    g2.rect.y = right_y - 54
+    # Generate gorillas
+    g1 = Gorilla(placeGorilla(buildings, 1))
+    g2 = Gorilla(placeGorilla(buildings, -2))
     gorillas = pygame.sprite.RenderPlain((g1, g2))
     
     while not done:
@@ -150,9 +216,10 @@ def main():
         buildings.draw(screen)
         gorillas.draw(screen)
         
-        pygame.display.flip()
+        pygame.display.update()
 
     pygame.quit()
+    sys.exit(1)
 
 if __name__ == "__main__":
     main()
