@@ -1,0 +1,217 @@
+# IMAGE GENERATORS
+
+STAR_ASCII = """
+
+
+   XX  XX
+    XXXX
+  XXXXXXXX
+    XXXX
+   XX  XX
+"""
+
+GOR_DOWN_ASCII = """
+
+          XXXXXXXX
+          XXXXXXXX
+         XX      XX
+         XXXXXXXXXX
+         XXX  X  XX
+          XXXXXXXX
+          XXXXXXXX
+           XXXXXX
+      XXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+  XXXXXXXXXXXX XXXXXXXXXXX
+ XXXXXXXXXXXXX XXXXXXXXXXXX
+ XXXXXXXXXXXX X XXXXXXXXXXX
+XXXXX XXXXXX XXX XXXXX XXXXX
+XXXXX XXX   XXXXX   XX XXXXX
+XXXXX   XXXXXXXXXXXX   XXXXX
+ XXXXX  XXXXXXXXXXXX  XXXXX
+ XXXXX  XXXXXXXXXXXX  XXXXX
+  XXXXX XXXXXXXXXXXX XXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+GOR_LEFT_ASCII = """
+   XXXXX
+  XXXXX   XXXXXXXX
+ XXXXX    XXXXXXXX
+ XXXXX   XX      XX
+XXXXX    XXXXXXXXXX
+XXXXX    XXX  X  XX
+XXXXX     XXXXXXXX
+ XXXXX    XXXXXXXX
+ XXXXX     XXXXXX
+  XXXXXXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+      XXXXXXXX XXXXXXXXXXX
+      XXXXXXXX XXXXXXXXXXXX
+      XXXXXXX X XXXXXXXXXXX
+      XXXXXX XXX XXXXX XXXXX
+      XXX   XXXXX   XX XXXXX
+        XXXXXXXXXXXX   XXXXX
+        XXXXXXXXXXXX  XXXXX
+        XXXXXXXXXXXX  XXXXX
+        XXXXXXXXXXXX XXXXX
+       XXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+GOR_RIGHT_ASCII = """
+                    XXXXX
+          XXXXXXXX   XXXXX
+          XXXXXXXX    XXXXX
+         XX      XX   XXXXX
+         XXXXXXXXXX    XXXXX
+         XXX  X  XX    XXXXX
+          XXXXXXXX     XXXXX
+          XXXXXXXX    XXXXX
+           XXXXXX     XXXXX
+      XXXXXXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+  XXXXXXXXXXXX XXXXXXX
+ XXXXXXXXXXXXX XXXXXXX
+ XXXXXXXXXXXX X XXXXXX
+XXXXX XXXXXX XXX XXXXX
+XXXXX XXX   XXXXX   XX
+XXXXX   XXXXXXXXXXXX
+ XXXXX  XXXXXXXXXXXX
+ XXXXX  XXXXXXXXXXXX
+  XXXXX XXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+BAN_RIGHT_ASCII = """
+     XX
+    XXX
+   XXX
+   XXX
+   XXX
+   XXX
+   XXX
+    XXX
+     XX
+"""
+
+BAN_LEFT_ASCII = """
+XX
+XXX
+ XXX
+ XXX
+ XXX
+ XXX
+ XXX
+XXX
+XX
+"""
+
+BAN_UP_ASCII = """
+XX     XX
+XXXXXXXXX
+ XXXXXXX
+  XXXXX
+"""
+
+BAN_DOWN_ASCII = """
+  XXXXX
+ XXXXXXX
+XXXXXXXXX
+XX     XX
+"""
+
+SUN_NORMAL_ASCII = """
+                    X
+                    X
+            X       X       X
+             X      X      X
+             X      X      X
+     X        X     X     X        X
+      X        X XXXXXXX X        X
+       XX      XXXXXXXXXXX      XX
+         X  XXXXXXXXXXXXXXXXX  X
+          XXXXXXXXXXXXXXXXXXXXX
+  X       XXXXXXXXXXXXXXXXXXXXX       X
+   XXXX  XXXXXXXXXXXXXXXXXXXXXXX  XXXX
+       XXXXXXXXXX XXXXX XXXXXXXXXX
+        XXXXXXXX   XXX   XXXXXXXX
+        XXXXXXXXX XXXXX XXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+       XXXXXX XXXXXXXXXXXXX XXXXXX
+   XXXX  XXXXX  XXXXXXXXX  XXXXX  XXXX
+  X       XXXXXX  XXXXX  XXXXXX       X
+          XXXXXXXX     XXXXXXXX
+         X  XXXXXXXXXXXXXXXXX  X
+       XX      XXXXXXXXXXX      XX
+      X        X XXXXXXX X        X
+     X        X     X     X        X
+             X      X      X
+             X      X      X
+            X       X       X
+                    X
+                    X
+"""
+
+SUN_SHOCKED_ASCII = """
+                    X
+                    X
+            X       X       X
+             X      X      X
+             X      X      X
+     X        X     X     X        X
+      X        X XXXXXXX X        X
+       XX      XXXXXXXXXXX      XX
+         X  XXXXXXXXXXXXXXXXX  X
+          XXXXXXXXXXXXXXXXXXXXX
+  X       XXXXXXXXXXXXXXXXXXXXX       X
+   XXXX  XXXXXXXXXXXXXXXXXXXXXXX  XXXX
+       XXXXXXXXXX XXXXX XXXXXXXXXX
+        XXXXXXXX   XXX   XXXXXXXX
+        XXXXXXXXX XXXXX XXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXXXXXXXXXXXXXXXX
+   XXXX  XXXXXXXXX     XXXXXXXXX  XXXX
+  X       XXXXXXX       XXXXXXX       X
+          XXXXXXX       XXXXXXX
+         X  XXXXXX     XXXXXX  X
+       XX      XXXXXXXXXXX      XX
+      X        X XXXXXXX X        X
+     X        X     X     X        X
+             X      X      X
+             X      X      X
+            X       X       X
+                    X
+                    X
+"""
+
