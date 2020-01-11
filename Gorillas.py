@@ -1,16 +1,6 @@
 import random
-import sys
 import pygame
-from pygame.math import Vector2
-
-import GameImages
 import math
-import time
-
-# GET SYSTEM ARGUMENTS #
-if len(sys.argv) > 1:
-    # sys.argv[1]...
-    pass
 
 # SCREEN SETTINGS
 SCREEN_WIDTH = 1200
@@ -31,8 +21,224 @@ SUN_COLOR = (255, 255, 0)
 EXPLOSION_COLOR = (255, 0, 0)
 DARK_RED_COLOR = (173, 0, 0)
 
+# IMAGE GENERATORS
+STAR_ASCII = """
 
-def makeSurfaceFromASCII(shape, fgColor=COLOR_WHITE, bgColor=COLOR_BLACK):
+
+   XX  XX
+    XXXX
+  XXXXXXXX
+    XXXX
+   XX  XX
+"""
+
+GOR_DOWN_ASCII = """
+
+          XXXXXXXX
+          XXXXXXXX
+         XX      XX
+         XXXXXXXXXX
+         XXX  X  XX
+          XXXXXXXX
+          XXXXXXXX
+           XXXXXX
+      XXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+  XXXXXXXXXXXX XXXXXXXXXXX
+ XXXXXXXXXXXXX XXXXXXXXXXXX
+ XXXXXXXXXXXX X XXXXXXXXXXX
+XXXXX XXXXXX XXX XXXXX XXXXX
+XXXXX XXX   XXXXX   XX XXXXX
+XXXXX   XXXXXXXXXXXX   XXXXX
+ XXXXX  XXXXXXXXXXXX  XXXXX
+ XXXXX  XXXXXXXXXXXX  XXXXX
+  XXXXX XXXXXXXXXXXX XXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+GOR_LEFT_ASCII = """
+   XXXXX
+  XXXXX   XXXXXXXX
+ XXXXX    XXXXXXXX
+ XXXXX   XX      XX
+XXXXX    XXXXXXXXXX
+XXXXX    XXX  X  XX
+XXXXX     XXXXXXXX
+ XXXXX    XXXXXXXX
+ XXXXX     XXXXXX
+  XXXXXXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+      XXXXXXXX XXXXXXXXXXX
+      XXXXXXXX XXXXXXXXXXXX
+      XXXXXXX X XXXXXXXXXXX
+      XXXXXX XXX XXXXX XXXXX
+      XXX   XXXXX   XX XXXXX
+        XXXXXXXXXXXX   XXXXX
+        XXXXXXXXXXXX  XXXXX
+        XXXXXXXXXXXX  XXXXX
+        XXXXXXXXXXXX XXXXX
+       XXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+GOR_RIGHT_ASCII = """
+                    XXXXX
+          XXXXXXXX   XXXXX
+          XXXXXXXX    XXXXX
+         XX      XX   XXXXX
+         XXXXXXXXXX    XXXXX
+         XXX  X  XX    XXXXX
+          XXXXXXXX     XXXXX
+          XXXXXXXX    XXXXX
+           XXXXXX     XXXXX
+      XXXXXXXXXXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXXXXXXX
+  XXXXXXXXXXXX XXXXXXX
+ XXXXXXXXXXXXX XXXXXXX
+ XXXXXXXXXXXX X XXXXXX
+XXXXX XXXXXX XXX XXXXX
+XXXXX XXX   XXXXX   XX
+XXXXX   XXXXXXXXXXXX
+ XXXXX  XXXXXXXXXXXX
+ XXXXX  XXXXXXXXXXXX
+  XXXXX XXXXXXXXXXXX
+   XXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXX
+     XXXXXX     XXXXXX
+     XXXXX       XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+    XXXXX         XXXXX
+     XXXXX       XXXXX
+"""
+
+BAN_RIGHT_ASCII = """
+     XX
+    XXX
+   XXX
+   XXX
+   XXX
+   XXX
+   XXX
+    XXX
+     XX
+"""
+
+BAN_LEFT_ASCII = """
+XX
+XXX
+ XXX
+ XXX
+ XXX
+ XXX
+ XXX
+XXX
+XX
+"""
+
+BAN_UP_ASCII = """
+XX     XX
+XXXXXXXXX
+ XXXXXXX
+  XXXXX
+"""
+
+BAN_DOWN_ASCII = """
+  XXXXX
+ XXXXXXX
+XXXXXXXXX
+XX     XX
+"""
+
+SUN_NORMAL_ASCII = """
+                    X
+                    X
+            X       X       X
+             X      X      X
+             X      X      X
+     X        X     X     X        X
+      X        X XXXXXXX X        X
+       XX      XXXXXXXXXXX      XX
+         X  XXXXXXXXXXXXXXXXX  X
+          XXXXXXXXXXXXXXXXXXXXX
+  X       XXXXXXXXXXXXXXXXXXXXX       X
+   XXXX  XXXXXXXXXXXXXXXXXXXXXXX  XXXX
+       XXXXXXXXXX XXXXX XXXXXXXXXX
+        XXXXXXXX   XXX   XXXXXXXX
+        XXXXXXXXX XXXXX XXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+       XXXXXX XXXXXXXXXXXXX XXXXXX
+   XXXX  XXXXX  XXXXXXXXX  XXXXX  XXXX
+  X       XXXXXX  XXXXX  XXXXXX       X
+          XXXXXXXX     XXXXXXXX
+         X  XXXXXXXXXXXXXXXXX  X
+       XX      XXXXXXXXXXX      XX
+      X        X XXXXXXX X        X
+     X        X     X     X        X
+             X      X      X
+             X      X      X
+            X       X       X
+                    X
+                    X
+"""
+
+SUN_SHOCKED_ASCII = """
+                    X
+                    X
+            X       X       X
+             X      X      X
+             X      X      X
+     X        X     X     X        X
+      X        X XXXXXXX X        X
+       XX      XXXXXXXXXXX      XX
+         X  XXXXXXXXXXXXXXXXX  X
+          XXXXXXXXXXXXXXXXXXXXX
+  X       XXXXXXXXXXXXXXXXXXXXX       X
+   XXXX  XXXXXXXXXXXXXXXXXXXXXXX  XXXX
+       XXXXXXXXXX XXXXX XXXXXXXXXX
+        XXXXXXXX   XXX   XXXXXXXX
+        XXXXXXXXX XXXXX XXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+        XXXXXXXXXXXXXXXXXXXXXXXXX
+       XXXXXXXXXXXXXXXXXXXXXXXXXXX
+   XXXX  XXXXXXXXX     XXXXXXXXX  XXXX
+  X       XXXXXXX       XXXXXXX       X
+          XXXXXXX       XXXXXXX
+         X  XXXXXX     XXXXXX  X
+       XX      XXXXXXXXXXX      XX
+      X        X XXXXXXX X        X
+     X        X     X     X        X
+             X      X      X
+             X      X      X
+            X       X       X
+                    X
+                    X
+"""
+
+
+def makeSurfaceFromASCII(shape, fgColor=COLOR_WHITE):
     shape = shape.split('\n')[1:-1]
     width = max([len(x) for x in shape])
     height = len(shape)
@@ -54,7 +260,8 @@ class Gorilla(pygame.sprite.Sprite):
     def __init__(self, on_left=True):
         pygame.sprite.Sprite.__init__(self)
         self.base_image = pygame.Surface((150, 150), pygame.SRCALPHA)
-        xy = ((self.base_image.get_width()-GORILLA_DOWN.get_width())//2, self.base_image.get_height()-GORILLA_DOWN.get_height())
+        xy = ((self.base_image.get_width()-GORILLA_DOWN.get_width())//2,
+              self.base_image.get_height()-GORILLA_DOWN.get_height())
         self.image_down = self.base_image.copy()
         self.mask = pygame.mask.from_surface(self.image_down)
         self.gor_rect = self.image_down.blit(GORILLA_DOWN, xy)
@@ -88,7 +295,8 @@ class Gorilla(pygame.sprite.Sprite):
         if self.turn and not self.is_dead:
             self.aim_reticule()
             if self.velocity > 0:
-                pygame.draw.rect(self.image, (0, 255, 0), (self.gor_rect.centerx-self.velocity//4, self.gor_rect.bottom-10, self.velocity//2, 10))
+                pygame.draw.rect(self.image, (0, 255, 0), (self.gor_rect.centerx-self.velocity//4,
+                                                           self.gor_rect.bottom-10, self.velocity//2, 10))
         elif self.left_up:
             self.image = self.image_left.copy()
             self.left_up = max(0, self.left_up - 1)
@@ -107,7 +315,7 @@ class Gorilla(pygame.sprite.Sprite):
                 player1.turn = False
                 player2.turn = False
                 game_over = True
-                ############################################################# GAME OVER
+                # GAME OVER
         else:
             self.image = self.original_image.copy()
 
@@ -280,8 +488,8 @@ class Banana(pygame.sprite.Sprite):
         self.y = pos[1]
         self.xv = math.cos(-self.aim) * velocity
         self.yv = math.sin(-self.aim) * velocity
-        self.gravity = 9.8
-        self.wind = 0
+        self.gravity = gravity
+        self.wind = wind
         bananas.add(self)
 
     def update(self, *args):
@@ -303,10 +511,10 @@ class Banana(pygame.sprite.Sprite):
                 player.celebrate = True
                 game_over = True
                 self.kill()
-        if not main_screen.get_rect().contains(self):
+        if self.pos[1] < -5:
             pygame.draw.rect(main_screen, (255, 0, 0, 125), (int(self.pos[0]), 5, 20, 3))
-            if self.pos[0] < -20 or self.pos[0] > SCREEN_WIDTH + 20:
-                self.kill()
+        if self.pos[0] < -20 or self.pos[0] > SCREEN_WIDTH + 20:
+            self.kill()
         if not len(bananas):
             swap_turns()
             del self
@@ -343,13 +551,7 @@ class HitPixel(pygame.sprite.Sprite):
         pixels.add(self)
 
     def update(self, *args):
-        """
-        if self.rect.x > SCREEN_WIDTH - self.image.get_width() or self.rect.x < 0:
-            self.angle = math.pi - self.angle
-        if self.rect.y > SCREEN_HEIGHT - self.image.get_height() or self.rect.y < 0:
-            self.angle *= -1
-        """
-        self.rect.centerx += int(self.speed * math.cos(self.angle))
+        self.rect.centerx += int(self.speed * math.cos(self.angle)) - int((wind/8) ** 3)
         self.rect.centery += int(self.speed * math.sin(self.angle) + (2**((game_timer - self.start_time)//6)))
         self.image.set_alpha(self.image.get_alpha() - self.alpha_fade)
         if self.image.get_alpha() <= 0:
@@ -363,7 +565,6 @@ clock = pygame.time.Clock()
 main_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("GORILLAS")
 TIME_START = pygame.time.get_ticks()
-GAME_FONT = pygame.font.SysFont(None, 20)
 
 # CUSTOM EVENTS #
 MY_EVENT = pygame.USEREVENT + 0
@@ -371,18 +572,31 @@ MY_EVENT = pygame.USEREVENT + 0
 # GAME SETTINGS
 game_timer = 0
 game_over = False
+wind = random.randrange(-20, 20)
+gravity = 9.8
 
 # GAME IMAGES #
-GORILLA_DOWN = makeSurfaceFromASCII(GameImages.GOR_DOWN_ASCII, GORILLA_COLOR)
-GORILLA_LEFT = makeSurfaceFromASCII(GameImages.GOR_LEFT_ASCII, GORILLA_COLOR)
-GORILLA_RIGHT = makeSurfaceFromASCII(GameImages.GOR_RIGHT_ASCII, GORILLA_COLOR)
-BANANA_UP = makeSurfaceFromASCII(GameImages.BAN_UP_ASCII, BANANA_COLOR)
-SUN_NORMAL = makeSurfaceFromASCII(GameImages.SUN_NORMAL_ASCII, SUN_COLOR)
-SUN_SHOCKED = makeSurfaceFromASCII(GameImages.SUN_SHOCKED_ASCII, SUN_COLOR)
+GORILLA_DOWN = makeSurfaceFromASCII(GOR_DOWN_ASCII, GORILLA_COLOR)
+GORILLA_LEFT = makeSurfaceFromASCII(GOR_LEFT_ASCII, GORILLA_COLOR)
+GORILLA_RIGHT = makeSurfaceFromASCII(GOR_RIGHT_ASCII, GORILLA_COLOR)
+BANANA_UP = makeSurfaceFromASCII(BAN_UP_ASCII, BANANA_COLOR)
+SUN_NORMAL = makeSurfaceFromASCII(SUN_NORMAL_ASCII, SUN_COLOR)
+SUN_SHOCKED = makeSurfaceFromASCII(SUN_SHOCKED_ASCII, SUN_COLOR)
 RETICULE = pygame.Surface((20, 20), pygame.SRCALPHA)
 pygame.draw.circle(RETICULE, (0, 255, 0), (10, 10), 10, 2)
 pygame.draw.line(RETICULE, (0, 255, 0), (10, 0), (10, 20), 3)
-pygame.draw.line(RETICULE, (0, 255, 0), (0, 10), (20, 10), 3)
+pygame.draw.line(RETICULE, (0, 255, 0), (0, 9), (20, 9), 2)
+
+# Make windvane
+WIND_ARROW_RIGHT = pygame.Surface((20, 20), pygame.SRCALPHA)
+pygame.draw.line(WIND_ARROW_RIGHT, (255, 0, 0), (0, 0), (20, 10), 3)
+pygame.draw.line(WIND_ARROW_RIGHT, (255, 0, 0), (0, 19), (20, 10), 3)
+WIND_ARROW_LEFT = pygame.Surface((20, 20), pygame.SRCALPHA)
+pygame.draw.line(WIND_ARROW_LEFT, (255, 0, 0), (0, 10), (20, 0), 3)
+pygame.draw.line(WIND_ARROW_LEFT, (255, 0, 0), (0, 10), (19, 19), 3)
+WIND_VANE = pygame.Surface((abs(wind)*(WIND_ARROW_RIGHT.get_width()//2)+10,
+                            WIND_ARROW_RIGHT.get_height()),
+                           pygame.SRCALPHA)
 
 # SPRITE GROUPS #
 gorillas = pygame.sprite.RenderPlain()
@@ -433,10 +647,21 @@ def fireworks():
         HitPixel((x, y))
 
 
+def make_windvane():
+    width = abs(wind) * 10
+    if wind < 0:
+        arrow = WIND_ARROW_RIGHT
+    else:
+        arrow = WIND_ARROW_LEFT
+    for i in range(abs(wind)):
+        WIND_VANE.blit(arrow, (10 * i, 0))
+
+
 def main():
     global game_timer, player
 
     setup_game()
+    make_windvane()
 
     done = False
     while not done:
@@ -509,6 +734,7 @@ def main():
         bananas.draw(main_screen)
         booms.draw(main_screen)
         pixels.draw(main_screen)
+        main_screen.blit(WIND_VANE, ((SCREEN_WIDTH-WIND_VANE.get_width())//2, SCREEN_HEIGHT-30))
 
         pygame.display.update()
 
